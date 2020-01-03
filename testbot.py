@@ -6,6 +6,8 @@ import youtube_dl
 from discord.ext import commands
 
 # Suppress noise about console usage from errors
+from discord.ext.commands import bot
+
 youtube_dl.utils.bug_reports_message = lambda: ''
 
 ytdl_format_options = {
@@ -73,7 +75,6 @@ class Music(commands.Cog):
 
         # await ctx.send('Now playing: {}'.format(query)
 
-
     @commands.command()
     async def yt(self, ctx, *, url):
         """Plays from a url (almost anything youtube_dl supports)"""
@@ -110,6 +111,26 @@ class Music(commands.Cog):
 
         await ctx.voice_client.disconnect()
 
+    @commands.command()
+    async def emote(self, ctx, arg):
+        emote = "ERROR: EMOTE NOT FOUND"
+        for i in bot.emojis:
+            if i.name == str(arg):
+                emote = str(i)
+        await ctx.send(emote)
+
+    @commands.command()
+    async def semx(self, ctx, arg):
+        name = ""
+        for i in bot.users:
+            if str(i) == str(arg):
+                name = i
+            # print(i.discriminator)
+        print(arg)
+        if name == "":
+            await ctx.send("Idk who that is but would love to meet them. Invite them for some fun ;)")
+            return
+        await ctx.send(name + " *kisses your cheek*")
     @play.before_invoke
     @yt.before_invoke
     @stream.before_invoke
@@ -134,5 +155,6 @@ async def on_ready():
     print('------')
 
 
+# client.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg6EoQ.oQ_2RBkcs2eb7a7_cV7RmaBtilA')
 bot.add_cog(Music(bot))
-bot.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg5kVQ.P1KdU_x8gJeN5gXw1hYSCos1mlM')
+bot.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg6EoQ.oQ_2RBkcs2eb7a7_cV7RmaBtilA')
