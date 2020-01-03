@@ -157,4 +157,4 @@ async def on_ready():
 
 # client.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg6EoQ.oQ_2RBkcs2eb7a7_cV7RmaBtilA')
 bot.add_cog(Music(bot))
-bot.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg6EoQ.oQ_2RBkcs2eb7a7_cV7RmaBtilA')
+bot.run('put token here')
