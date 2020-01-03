@@ -44,3 +44,11 @@ saddoge = [
     "https://i.imgflip.com/11le1o.jpg"
 
 ]
+
+eggs = [
+    "https://media2.giphy.com/media/h7p3AkMvDEMow/source.gif",
+    "https://media1.giphy.com/media/TS3DjYnGGngT6/source.gif",
+    "https://i.ytimg.com/vi/FJh1esuLCWM/hqdefault.jpg"
+
+
+]
