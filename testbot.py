@@ -1,13 +1,14 @@
 import asyncio
-
+import os
+import random
+import requests
 import discord
 import youtube_dl
-
 from discord.ext import commands
 
-# Suppress noise about console usage from errors
 from discord.ext.commands import bot
 
+# Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ''
 
 ytdl_format_options = {
@@ -53,31 +54,76 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
 
+def get_sound(key):
+    # sounds = {
+    #     "eggs": "eggs.ogg",
+    #     "semx": "moan.ogg",
+    #     "crabrave": random.choice([
+    #         "crab.opus",
+    #         "crabrave_smb.opus",
+    #         "crabmetal.opus",
+    #         "crabali.opus",
+    #         "crabsans.opus",
+    #         "crabgod.opus"])
+    # }
+    path = random.choice(os.listdir("sounds/" + key))  # change dir name to whatever
+
+    return "sounds/" + key + "/" + path
+
+
+def get_video():
+    channels = [
+        "https://www.youtube.com/channel/UCYd6CmhFvvq6yruUBmGXjuA/videos",
+        "https://www.youtube.com/channel/UCX2laRqGQhqoChYmlaUgOiw/videos",
+        "https://www.youtube.com/user/wettitab/videos",
+        "https://www.youtube.com/channel/UC38r7_x7oMPAZweB2fvGDXQ/videos",
+        "https://www.youtube.com/channel/UC-xjitW_J39_Q1ure2HlJew/videos",
+        "https://www.youtube.com/channel/UCHh-cQr-viOcimjPhxr3xRQ/videos",
+        "https://www.youtube.com/channel/UCAJI1a4L0R5HkvTHTxZOd6g/videos",
+        "https://www.youtube.com/user/shibainusaki/videos",
+        "https://www.youtube.com/channel/UCOE2s_EwBM0es4TfC6ce7Fg/videos"
+
+    ]
+    all_vids = []
+    for i in channels:
+        url = i
+        page = requests.get(url).content
+        data = str(page).split(' ')
+        item = 'href="/watch?'
+        vids = [line.replace('href="', 'youtube.com') for line in data if
+                item in line]  # list of all videos listed twice
+        all_vids.extend(vids)
+    return random.choice(all_vids)
+
+
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     async def join(self, ctx, *, channel: discord.VoiceChannel):
-        """Joins a voice channel"""
 
         if ctx.voice_client is not None:
             return await ctx.voice_client.move_to(channel)
 
         await channel.connect()
 
+    @commands.command()
+    async def shibe(self, ctx):
+        await ctx.send("https://www." + str(get_video()).replace("\"", ""))
+
     @commands.command(aliases=['EGGS', 'eggs', 'Eggs'])
-    async def play(self, ctx):
-        """Plays a file from the local filesystem"""
-
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("eggs.ogg"))
+    async def play(self, ctx, args="eggs"):
+        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(get_sound(args)))
+        emote = "ERROR: EMOTE NOT FOUND"
+        for i in bot.emojis:
+            if i.name == "cooldoge":
+                emote = str(i)
+        await ctx.send(emote)
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
-
-        # await ctx.send('Now playing: {}'.format(query)
 
     @commands.command()
     async def yt(self, ctx, *, url):
-        """Plays from a url (almost anything youtube_dl supports)"""
 
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
@@ -87,7 +133,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def stream(self, ctx, *, url):
-        """Streams from a url (same as yt, but doesn't predownload)"""
 
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
@@ -97,7 +142,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def volume(self, ctx, volume: int):
-        """Changes the player's volume"""
 
         if ctx.voice_client is None:
             return await ctx.send("Not connected to a voice channel.")
@@ -107,7 +151,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def stop(self, ctx):
-        """Stops and disconnects the bot from voice"""
 
         await ctx.voice_client.disconnect()
 
@@ -120,17 +163,10 @@ class Music(commands.Cog):
         await ctx.send(emote)
 
     @commands.command()
-    async def semx(self, ctx, arg):
-        name = ""
-        for i in bot.users:
-            if str(i) == str(arg):
-                name = i
-            # print(i.discriminator)
-        print(arg)
-        if name == "":
-            await ctx.send("Idk who that is but would love to meet them. Invite them for some fun ;)")
-            return
-        await ctx.send(name + " *kisses your cheek*")
+    async def meme(self, ctx):
+        path = random.choice(os.listdir("memes/"))  # change dir name to whatever
+        await ctx.send(file=discord.File("memes/" + path))
+
     @play.before_invoke
     @yt.before_invoke
     @stream.before_invoke
@@ -146,7 +182,7 @@ class Music(commands.Cog):
 
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("doge!"),
-                   description='Relatively simple music bot example')
+                   description='Karen, release me from this discord bot immediately!')
 
 
 @bot.event
@@ -155,6 +191,5 @@ async def on_ready():
     print('------')
 
 
-# client.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg6EoQ.oQ_2RBkcs2eb7a7_cV7RmaBtilA')
 bot.add_cog(Music(bot))
-bot.run('put token here')
+bot.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg_oiQ.LYiKn88oBqGv9o86RH7uuJj1bBA')
