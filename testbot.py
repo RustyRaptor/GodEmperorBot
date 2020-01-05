@@ -1,3 +1,9 @@
+from tweepy import OAuthHandler
+from tweepy import API
+from tweepy import Cursor
+from datetime import datetime, date, time, timedelta
+from collections import Counter
+import sys
 import asyncio
 import os
 import random
@@ -8,6 +14,14 @@ from discord.ext import commands
 
 from discord.ext.commands import bot
 
+# consumer_key=""
+# consumer_secret=""
+# access_token=""
+# access_token_secret=""
+#
+# auth = OAuthHandler(consumer_key, consumer_secret)
+# auth.set_access_token(access_token, access_token_secret)
+# auth_api = API(auth)
 # Suppress noise about console usage from errors
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -121,6 +135,10 @@ class Music(commands.Cog):
                 emote = str(i)
         await ctx.send(emote)
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
+        if args == "dorime":
+            path = random.choice(os.listdir("dorimepic/"))  # change dir name to whatever
+            await ctx.send(file=discord.File("dorimepic/" + path))
+
 
     @commands.command()
     async def yt(self, ctx, *, url):
@@ -167,6 +185,11 @@ class Music(commands.Cog):
         path = random.choice(os.listdir("memes/"))  # change dir name to whatever
         await ctx.send(file=discord.File("memes/" + path))
 
+    @commands.command()
+    async def memerand(self, ctx):
+        path = random.choice(os.listdir("memerand/"))  # change dir name to whatever
+        await ctx.send(file=discord.File("memerand/" + path))
+
     @play.before_invoke
     @yt.before_invoke
     @stream.before_invoke
@@ -192,4 +215,4 @@ async def on_ready():
 
 
 bot.add_cog(Music(bot))
-bot.run('NjYyMzQ1OTg3Mzg5NTIxOTcw.Xg_oiQ.LYiKn88oBqGv9o86RH7uuJj1bBA')
+bot.run('token')
