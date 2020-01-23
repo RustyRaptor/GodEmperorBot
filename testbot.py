@@ -85,7 +85,21 @@ def get_sound(key):
     return "sounds/" + key + "/" + path
 
 
-def get_video():
+
+
+dorimes = [
+    "https://youtu.be/f6jvnmyYpl8",
+    "https://www.youtube.com/watch?v=hCzfzeobeNM",
+    "https://www.youtube.com/watch?v=kLaaJ_aeoyM",
+    "https://www.youtube.com/watch?v=zQ4LiyFF8RU",
+    "https://www.youtube.com/watch?v=6xUnSVTh8fI"
+]
+
+
+def get_video(source):
+    cheemses = [
+        "https://www.youtube.com/channel/UChZWowQd_y6usuF7vSL4jmA"
+    ]
     channels = [
         "https://www.youtube.com/channel/UCYd6CmhFvvq6yruUBmGXjuA/videos",
         "https://www.youtube.com/channel/UCX2laRqGQhqoChYmlaUgOiw/videos",
@@ -95,11 +109,19 @@ def get_video():
         "https://www.youtube.com/channel/UCHh-cQr-viOcimjPhxr3xRQ/videos",
         "https://www.youtube.com/channel/UCAJI1a4L0R5HkvTHTxZOd6g/videos",
         "https://www.youtube.com/user/shibainusaki/videos",
-        "https://www.youtube.com/channel/UCOE2s_EwBM0es4TfC6ce7Fg/videos"
+        "https://www.youtube.com/channel/UCOE2s_EwBM0es4TfC6ce7Fg/videos",
+        "https://www.youtube.com/channel/UCkEdaRw8w0daEvGgzKff8TA",
+        "https://www.youtube.com/channel/UC_WUkVnPROmHC1qnGHQAMDA",
+        "https://www.youtube.com/channel/UChZWowQd_y6usuF7vSL4jmA"
 
     ]
+
+    sources = {
+        "shibes": channels,
+        "cheems": cheemses
+    }
     all_vids = []
-    for i in channels:
+    for i in sources[source]:
         url = i
         page = requests.get(url).content
         data = str(page).split(' ')
@@ -115,6 +137,24 @@ class Music(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    async def help(self, ctx):
+        embed = discord.Embed(title="DOGE BOT COMMANDS", description="command prefix is doge! e.g. doge!meme",
+                              color=0xe8e361)
+        embed.set_author(name="GodEmperorDoge", url="https://www.github.com/rustyraptor")
+        embed.set_thumbnail(url="https://i.imgur.com/ddy9MGr.jpg")
+        embed.add_field(name="meme", value="fetch a random doge meme or template", inline=False)
+        embed.add_field(name="memerand", value="fetch a random image", inline=False)
+        embed.add_field(name="shibe", value="get a cute or funny shibe video", inline=False)
+        embed.add_field(name="play", value="play a sound (for list of sounds type doge!playlist", inline=False)
+        embed.add_field(name="yt", value="play a youtube video link", inline=False)
+        embed.add_field(name="volume", value="adjust volume to n%", inline=False)
+        embed.add_field(name="eggs", value="eggs", inline=False)
+        embed.add_field(name="emote", value="doge will send an emote he has access to. ", inline=False)
+        embed.add_field(name="stop", value="stops playback and disconnects", inline=False)
+        embed.set_footer(text="If you want more content or features ask me to add them. ")
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def join(self, ctx, *, channel: discord.VoiceChannel):
 
         if ctx.voice_client is not None:
@@ -124,7 +164,13 @@ class Music(commands.Cog):
 
     @commands.command()
     async def shibe(self, ctx):
-        await ctx.send("https://www." + str(get_video()).replace("\"", ""))
+        await ctx.send("https://www." + str(get_video("shibes")).replace("\"", ""))
+
+    @commands.command()
+    async def cheems(self, ctx):
+        await ctx.send("https://www." + str(get_video("cheems")).replace("\"", ""))
+        path = random.choice(os.listdir("cheems/"))  # change dir name to whatever
+        await ctx.send(file=discord.File("cheems/" + path))
 
     @commands.command(aliases=['EGGS', 'eggs', 'Eggs'])
     async def play(self, ctx, args="eggs"):
@@ -138,7 +184,7 @@ class Music(commands.Cog):
         if args == "dorime":
             path = random.choice(os.listdir("dorimepic/"))  # change dir name to whatever
             await ctx.send(file=discord.File("dorimepic/" + path))
-
+            await ctx.send(random.choice(dorimes))
 
     @commands.command()
     async def yt(self, ctx, *, url):
@@ -206,7 +252,7 @@ class Music(commands.Cog):
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("doge!"),
                    description='Karen, release me from this discord bot immediately!')
-
+bot.remove_command('help')
 
 @bot.event
 async def on_ready():
@@ -215,4 +261,4 @@ async def on_ready():
 
 
 bot.add_cog(Music(bot))
-bot.run('token')
+bot.run('yourtoken')
