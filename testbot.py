@@ -19,6 +19,7 @@ from os.path import join, getsize
 import re
 # Example posting a local image file:
 import aiohttp
+from aiohttp_requests import requests
 import requests
 import dhash
 import imagehash
@@ -216,34 +217,38 @@ class Music(commands.Cog):
             "https://www." + str(get_video("shibes")).replace("\"", ""))
 
     @commands.command()
-    async def deepdream(self, ctx):
-        imagepath = './imagesdb/IMAGE' + str(ctx.message.id)
-        aiurl = "https://api.deepai.org/api/deepdream"
-        aifiles = {'image': aiofiles.open(imagepath, 'rb')}
-        aiheaders = {'api-key': '485f6ea6-1175-428f-9bff-43e04ee8fa09'}
-
+    async def dogedream(self, ctx):
+        """
+        Doge Dream command for helping Ziad
+        """
         try:
             url = ctx.message.attachments[0].url
         except Exception:
-            await ctx.channel.send(
-                "WHAT THE FUCK IS THIS??? USE A PROPER IMAGE YOU WANKER!!!!")
-            return
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as resp:
-                if resp.status == 200:
-                    f = await aiofiles.open(
-                        imagepath, mode='wb')
-                    await f.write(await resp.read())
-                    await f.close()
-                    await ctx.channel.send(
-                        "OK FUCK I SAVED YOUR FUCKING IMAGE PLEASE STOP "
-                        "TORMENTING ME OH GOD OH FUCK")
-                else:
-                    raise Exception(
-                        'FUCKING IMAGE ISN"T THERE FUCKING FIX IT DIPSHIT FUCK')
-            async with session.post(aiurl, data=aifiles, headers=aiheaders) \
-                    as resp:
-                await ctx.channel.send(resp.)
+            ctx.send("Error! please use attachments")
+            # Note: you can pass url from message.content, I suggest using mimetypes to indentify if URL has image.
+            return ()
+
+        # Used aiohttp-requests for simplicity rather than aiohttp
+        r = await requests.post(
+            "https://api.deepai.org/api/deepdream",
+            data={"image": url},
+            headers={"api-key": self.apikey},
+        )
+
+        json = await r.json()
+        print(json)
+        try:
+            await ctx.send(json["output_url"])
+        except Exception as e:
+            await ctx.send("%s\n%s" % (e, json))
+
+    @commands.command()
+    async def dogeapi(self, ctx, api: str):
+        """
+        Sets API Key
+        """
+        self.apikey = api
+        await ctx.send("set API key to: %s" % api)
 
     @commands.command()
     async def kobe(self, ctx):
