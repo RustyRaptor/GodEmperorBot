@@ -1,5 +1,6 @@
 # Project exclude paths
 /venv/
+./.env
 .env
 /images/
 /sounds/
