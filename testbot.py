@@ -197,12 +197,7 @@ class Music(commands.Cog):
                         inline=False)
         embed.add_field(name="volume", value="adjust volume to n%",
                         inline=False)
-        embed.add_field(name="eggs", value="eggs", inline=False)
         embed.add_field(
-            name="emote",
-            value="doge will send an emote he has access to. ",
-            inline=False,
-        )
         embed.add_field(
             name="stop", value="stops playback and disconnects", inline=False
         )
@@ -221,20 +216,24 @@ class Music(commands.Cog):
 
     @commands.command()
     async def shibe(self, ctx):
+<<<<<<< HEAD
         await ctx.send(
             "https://www." + str(get_video("shibes")).replace('"', ""))
 
     @commands.command()
-    async def dogedream(self, ctx, arg):
-        """
-        Doge Dream command for helping Ziad
-        """
-        try:
-            url = ctx.message.attachments[0].url
+=======
+        await ctx.send("https://www." + str(get_video("shibes")).replace('"', ""))
+
+    @commands.command()
+    async def dogedream(self, ctx):
         except Exception:
             ctx.send("Error! please use attachments")
+<<<<<<< HEAD
             # Note: you can pass url from message.content,
             # I suggest using mimetypes to indentify if URL has image.
+=======
+            # Note: you can pass url from message.content, I suggest using mimetypes to indentify if URL has image.
+>>>>>>> bdb928325678154451558126ef9213daccd39517
             return ()
 
         # Used aiohttp-requests for simplicity rather than aiohttp
@@ -284,10 +283,16 @@ class Music(commands.Cog):
             pagecnt += 1
         embedlist.append(
             discord.Embed(
+<<<<<<< HEAD
                 title="🔊🔊🔊LIST OF SOUNDS Page 1" + "/" + str(
                     pagecnt) + " 🔊🔊🔊",
                 description="do doge!sounds pagenumber for another page. example: "
                             "doge!sounds 2",
+=======
+                title="🔊🔊🔊LIST OF SOUNDS Page 1" + "/" + str(pagecnt) + " 🔊🔊🔊",
+                description="do doge!sounds pagenumber for another page. example: "
+                "doge!sounds 2",
+>>>>>>> bdb928325678154451558126ef9213daccd39517
                 color=0xE8E361,
             )
         )
@@ -307,20 +312,33 @@ class Music(commands.Cog):
                 embedlist.append(
                     discord.Embed(
                         title="🔊🔊🔊LIST OF SOUNDS Page "
+<<<<<<< HEAD
                               + str(pageno + 1)
                               + "/"
                               + str(pagecnt)
                               + " 🔊🔊🔊",
+=======
+                        + str(pageno + 1)
+                        + "/"
+                        + str(pagecnt)
+                        + " 🔊🔊🔊",
+>>>>>>> bdb928325678154451558126ef9213daccd39517
                         description="Command format is doge!play " "nameofsound",
                         color=0xE8E361,
                     )
                 )
                 embedlist[pageno].set_author(
+<<<<<<< HEAD
                     name="GodEmperorDoge",
                     url="https://www.github.com" "/rustyraptor"
                 )
                 embedlist[pageno].set_thumbnail(
                     url="https://i.imgur.com/ddy9MGr.jpg")
+=======
+                    name="GodEmperorDoge", url="https://www.github.com" "/rustyraptor"
+                )
+                embedlist[pageno].set_thumbnail(url="https://i.imgur.com/ddy9MGr.jpg")
+>>>>>>> bdb928325678154451558126ef9213daccd39517
 
             inln = True
             if len(name) > 10:
@@ -336,9 +354,14 @@ class Music(commands.Cog):
 
     @commands.command()
     async def cheems(self, ctx):
+<<<<<<< HEAD
         await ctx.send(
             "https://www." + str(get_video("cheems")).replace('"', ""))
         path = random.choice(os.listdir("cheems/"))
+=======
+        await ctx.send("https://www." + str(get_video("cheems")).replace('"', ""))
+        path = random.choice(os.listdir("cheems/"))  # change dir name to whatever
+>>>>>>> bdb928325678154451558126ef9213daccd39517
         await ctx.send(file=discord.File("cheems/" + path))
 
     @commands.command()
@@ -369,12 +392,20 @@ class Music(commands.Cog):
                 counter += 1
             if counter > 10:
                 break
+<<<<<<< HEAD
+=======
+        import requests
+>>>>>>> bdb928325678154451558126ef9213daccd39517
 
         score = 0
         for i in messages:
             r = requests.post(
                 "https://api.deepai.org/api/sentiment-analysis",
+<<<<<<< HEAD
                 data={"text": i, },
+=======
+                data={"text": i,},
+>>>>>>> bdb928325678154451558126ef9213daccd39517
                 headers={"api-key": "485f6ea6-1175-428f-9bff-43e04ee8fa09"},
             )
             print(r.json())
@@ -400,17 +431,26 @@ class Music(commands.Cog):
             await ctx.channel.send(embed=embed)
         else:
             embed = discord.Embed(
+<<<<<<< HEAD
                 title="You passed the vibecheck", description="Hooray",
                 color=0xFBFF00
+=======
+                title="You passed the vibecheck", description="Hooray", color=0xFBFF00
+>>>>>>> bdb928325678154451558126ef9213daccd39517
             )
             embed.set_author(name="Doge Bot")
             embed.set_image(url="https://i.imgur.com/l3FplOj.jpg")
             await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=["EGGS", "eggs", "Eggs"])
+<<<<<<< HEAD
     async def play(self, ctx, folder="eggs", cut="full"):
         source = discord.PCMVolumeTransformer(
             discord.FFmpegPCMAudio(get_sound(folder)))
+=======
+    async def play(self, ctx, args="eggs"):
+        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(get_sound(args)))
+>>>>>>> bdb928325678154451558126ef9213daccd39517
         emote = "ERROR: EMOTE NOT FOUND"
         for i in bot.emojis:
             if i.name == "cooldoge":
@@ -419,6 +459,7 @@ class Music(commands.Cog):
         ctx.voice_client.play(
             source, after=lambda e: print("Player error: %s" % e) if e else None
         )
+<<<<<<< HEAD
         if cut != "full":
             if cut == "short":
                 time.sleep(6)
@@ -448,6 +489,15 @@ class Music(commands.Cog):
         ctx.voice_client.play(
             source, after=lambda e: print("Player error: %s" % e) if e else None
         )
+=======
+        if args == "dorime":
+            path = random.choice(
+                os.listdir("dorimepic/")
+            )  # change dir name to whatever
+            await ctx.send(file=discord.File("dorimepic/" + path))
+            await ctx.send(random.choice(dorimes))
+            # await ctx.send("We need more prayers! Say DORIME")
+>>>>>>> bdb928325678154451558126ef9213daccd39517
 
     @commands.command()
     async def yt(self, ctx, *, url):
@@ -455,8 +505,12 @@ class Music(commands.Cog):
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
             ctx.voice_client.play(
+<<<<<<< HEAD
                 player,
                 after=lambda e: print("Player error: %s" % e) if e else None
+=======
+                player, after=lambda e: print("Player error: %s" % e) if e else None
+>>>>>>> bdb928325678154451558126ef9213daccd39517
             )
 
         await ctx.send("Now playing: {}".format(player.title))
@@ -465,11 +519,17 @@ class Music(commands.Cog):
     async def stream(self, ctx, *, url):
 
         async with ctx.typing():
+<<<<<<< HEAD
             player = await YTDLSource.from_url(url, loop=self.bot.loop,
                                                stream=True)
             ctx.voice_client.play(
                 player,
                 after=lambda e: print("Player error: %s" % e) if e else None
+=======
+            player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
+            ctx.voice_client.play(
+                player, after=lambda e: print("Player error: %s" % e) if e else None
+>>>>>>> bdb928325678154451558126ef9213daccd39517
             )
 
         await ctx.send("Now playing: {}".format(player.title))
@@ -524,10 +584,69 @@ bot.remove_command("help")
 async def on_ready():
     print("Logged in as {0} ({0.id})".format(bot.user))
     print("------")
+<<<<<<< HEAD
+=======
+
+
+# @bot.event
+# async def on_message(message):
+#     import requests
+#     if not message.author.bot and "deepdream" in message.content:
+#         url = message.attachments[0].url
+#         r = requests.get(url, allow_redirects=True)
+#         open('./imagesdb/testfile', 'wb').write(r.content)
+#         imgList = os.listdir('./imagesdb')  # Creates a list of filenames from your folder
+#         imgString = random.choice(imgList)
+#         path = "./imagesdb/" + imgString  # Creates a string for the path to the file
+#
+#         import requests
+#         r = requests.post(
+#             "https://api.deepai.org/api/deepdream",
+#             files={
+#                 'image': open(path, 'rb'),
+#             },
+#             headers={'api-key': '485f6ea6-1175-428f-9bff-43e04ee8fa09'}
+#         )
+#         print(r.json())
+#         await message.channel.send("Iteration 1 " + r.json()['output_url'])
+#
+#         async def fetch(session, url):
+#             async with session.get(url) as response:
+#                 return await response.text()
+#
+#         async def asrange(n):
+#             for a in range(n):
+#                 yield a
+#
+#         async for i in asrange(50):
+#             print("Iteration", i)
+#             url = r.json()['output_url']
+#             r = fetch(url, allow_redirects=True)
+#             open('./imagesdb/' + str(message.id) + str(i), 'wb').write(r.content)
+#             imgList = os.listdir('./imagesdb/')  # Creates a list of filenames from your folder
+#             path = './imagesdb/' + str(message.id) + str(i)
+#             # Creates a string for the path to the file
+#             r = requests.post(
+#                 "https://api.deepai.org/api/deepdream",
+#                 files={
+#                     'image': open(path, 'rb'),
+#                 },
+#                 headers={'api-key': '485f6ea6-1175-428f-9bff-43e04ee8fa09'}
+#             )
+#
+#         await message.channel.send("Iteration 50" + r.json()['output_url'])
+#
+#     # if message.author.id == 250453739046043659:
+#     #     for channel in message.guild:
+#     #         await channel.send('<@125260119691755521>')
+#
+#     await bot.process_commands(message)
+>>>>>>> bdb928325678154451558126ef9213daccd39517
 
 
 bot.add_cog(Music(bot))
 bot.run(os.getenv("DISCORD_TOKEN"))
+<<<<<<< HEAD
 
 # !/usr/bin/env python
 
@@ -550,3 +669,5 @@ Example usage:
     python synthesize_text.py --text "hello"
     python synthesize_text.py --ssml "<speak>Hello there.</speak>"
 """
+=======
+>>>>>>> bdb928325678154451558126ef9213daccd39517
