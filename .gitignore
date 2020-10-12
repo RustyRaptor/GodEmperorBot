@@ -1,8 +1,8 @@
 # Project exclude paths
 /venv/
 .env
-/memes/
+/images/
 /sounds/
-/memerand/
-/dorimepic/
-/cheems/
+/.idea/
+/PokeDoges/
+PokeDoges.csv
